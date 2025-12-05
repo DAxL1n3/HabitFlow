@@ -2,7 +2,6 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart'; 
 import '../models/habito_model.dart';
 class DatabaseHelper {
-  // Configuración correcta del Singleton
   static final DatabaseHelper instance = DatabaseHelper._init();
   static Database? _database;
   DatabaseHelper._init(); 
@@ -31,7 +30,6 @@ class DatabaseHelper {
   Future<Habito> crearHabito(Habito habito) async {
     final db = await instance.database;
     final id = await db.insert('habitos', habito.toMap());
-    // Asignamos el id autogenerado al objeto antes de devolverlo
     return habito..id = id;
   }
 
@@ -48,8 +46,7 @@ class DatabaseHelper {
       );
     });
   }
-  
-  // Función para actualizar habito
+
   Future<int> update(Habito habito) async {
     final db = await instance.database;
     return db.update(
@@ -60,7 +57,6 @@ class DatabaseHelper {
     );
   }
 
-  // Función para eliminar un hábito por su ID
   Future<int> delete(int id) async {
     final db = await instance.database;
     return db.delete(
@@ -69,8 +65,7 @@ class DatabaseHelper {
       whereArgs: [id], 
     );
   }
-  
-  // Cerrar la base de datos
+
   Future close() async {
     final db = await instance.database;
     db.close();

@@ -6,13 +6,11 @@ import 'crear_habito_screen.dart';
 class EstatusScreen extends StatelessWidget {
   const EstatusScreen({super.key});
 
-  // --- LÓGICA DE FECHA ---
   String _getFechaHoy() {
     final now = DateTime.now();
     return "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
   }
 
-  // --- LÓGICA: Extraer el número de la frecuencia ---
   int _parsearFrecuencia(String textoFrecuencia) {
     final regex = RegExp(r'\d+');
     final match = regex.firstMatch(textoFrecuencia);
@@ -22,7 +20,6 @@ class EstatusScreen extends StatelessWidget {
     return 1;
   }
 
-  // --- LÓGICA: Incrementar Progreso ---
   Future<void> _incrementarProgreso(
     String docId,
     Map<String, dynamic> historial,
@@ -41,7 +38,6 @@ class EstatusScreen extends StatelessWidget {
     }
   }
 
-  // --- LÓGICA: Reiniciar ---
   Future<void> _resetearProgresoHoy(String docId) async {
     final hoy = _getFechaHoy();
     await FirebaseFirestore.instance.collection('habitos').doc(docId).set({
@@ -50,7 +46,6 @@ class EstatusScreen extends StatelessWidget {
     }, SetOptions(merge: true));
   }
 
-  // --- LÓGICA: Eliminar ---
   void _eliminarHabito(
     BuildContext context,
     String docId,
@@ -68,7 +63,12 @@ class EstatusScreen extends StatelessWidget {
         ),
       );
     } catch (e) {
-      /* Error */
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Error al eliminar '$nombre'."),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -82,17 +82,16 @@ class EstatusScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      // Fondo gris muy claro para resaltar las tarjetas blancas (Estilo moderno)
       backgroundColor: const Color(0xFFF5F7FA),
       appBar: AppBar(
         title: const Text(
           "Mi Progreso Diario",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
         ),
-        centerTitle: false, // Título alineado a la izquierda se ve más moderno
+        centerTitle: false, 
         backgroundColor: Colors.white,
-        foregroundColor: Colors.blue[900], // Texto oscuro
-        elevation: 0, // Sin sombra en el AppBar para un look plano
+        foregroundColor: Colors.blue[900], 
+        elevation: 0, 
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
@@ -111,7 +110,6 @@ class EstatusScreen extends StatelessWidget {
           final pendientes = <QueryDocumentSnapshot>[];
           final completados = <QueryDocumentSnapshot>[];
 
-          // Clasificación de hábitos
           for (var doc in allDocs) {
             final data = doc.data() as Map<String, dynamic>;
             final meta = _parsearFrecuencia(
@@ -129,7 +127,6 @@ class EstatusScreen extends StatelessWidget {
             }
           }
 
-          // Cálculos para la barra global
           final totalHabitos = allDocs.length;
           final totalCompletados = completados.length;
           final porcentajeGlobal = totalHabitos == 0
@@ -141,7 +138,6 @@ class EstatusScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // 1. Barra de Resumen Global (Estilo Dashboard)
                 _buildGlobalSummary(
                   totalCompletados,
                   totalHabitos,
@@ -150,7 +146,6 @@ class EstatusScreen extends StatelessWidget {
 
                 const SizedBox(height: 25),
 
-                // 2. Sección Pendientes
                 if (pendientes.isNotEmpty) ...[
                   _buildSectionTitle("POR HACER (${pendientes.length})"),
                   const SizedBox(height: 10),
@@ -159,7 +154,6 @@ class EstatusScreen extends StatelessWidget {
                       ,
                 ],
 
-                // 3. Sección Completados
                 if (completados.isNotEmpty) ...[
                   const SizedBox(height: 25),
                   _buildSectionTitle("TERMINADOS HOY (${completados.length})"),
@@ -169,7 +163,6 @@ class EstatusScreen extends StatelessWidget {
                       ,
                 ],
 
-                // Mensaje si todo está hecho
                 if (pendientes.isEmpty && completados.isNotEmpty)
                   _buildAllDoneMessage(),
               ],
@@ -180,12 +173,11 @@ class EstatusScreen extends StatelessWidget {
     );
   }
 
-  // --- WIDGET: Resumen Global Superior ---
   Widget _buildGlobalSummary(int hechos, int total, double porcentaje) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.blue[800], // Tarjeta oscura para contraste
+        color: Colors.blue[800], 
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -220,8 +212,8 @@ class EstatusScreen extends StatelessWidget {
             child: LinearProgressIndicator(
               value: porcentaje,
               minHeight: 10,
-              backgroundColor: Colors.blue[900], // Fondo oscuro de la barra
-              color: Colors.greenAccent, // Color brillante para el progreso
+              backgroundColor: Colors.blue[900], 
+              color: Colors.greenAccent, 
             ),
           ),
           const SizedBox(height: 10),
@@ -237,7 +229,6 @@ class EstatusScreen extends StatelessWidget {
     );
   }
 
-  // --- WIDGET: Tarjeta de Hábito Activo ---
   Widget _buildActiveHabitCard(
     BuildContext context,
     QueryDocumentSnapshot doc,
@@ -269,7 +260,6 @@ class EstatusScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                // Icono decorativo
                 Container(
                   width: 40,
                   height: 40,
@@ -349,7 +339,6 @@ class EstatusScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 15),
-                // Botón + Estilizado
                 InkWell(
                   onTap: () => _incrementarProgreso(doc.id, historial, meta),
                   borderRadius: BorderRadius.circular(12),
@@ -377,7 +366,6 @@ class EstatusScreen extends StatelessWidget {
     );
   }
 
-  // --- WIDGET: Tarjeta Completada ---
   Widget _buildCompletedHabitCard(
     BuildContext context,
     QueryDocumentSnapshot doc,
@@ -386,11 +374,11 @@ class EstatusScreen extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-        color: Colors.white, // Fondo blanco limpio
+        color: Colors.white, 
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: Colors.green.withOpacity(0.1),
-        ), // Borde verde sutil
+        ), 
       ),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -418,7 +406,6 @@ class EstatusScreen extends StatelessWidget {
     );
   }
 
-  // --- WIDGET: Mensaje de "Todo Listo" ---
   Widget _buildAllDoneMessage() {
     return Container(
       margin: const EdgeInsets.only(top: 30),
@@ -445,7 +432,6 @@ class EstatusScreen extends StatelessWidget {
     );
   }
 
-  // --- UTILS ---
   Widget _buildEditMenu(
     BuildContext context,
     QueryDocumentSnapshot doc,
@@ -455,7 +441,7 @@ class EstatusScreen extends StatelessWidget {
       icon: Icon(
         Icons.more_horiz,
         color: Colors.grey[400],
-      ), // Icono más discreto
+      ), 
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       onSelected: (value) {
         if (value == 'edit') {

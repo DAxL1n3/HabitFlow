@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart'; // <--- IMPORTANTE
+import 'package:firebase_storage/firebase_storage.dart'; 
 import 'package:share_plus/share_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -29,7 +29,6 @@ class _PerfilScreenState extends State<PerfilScreen> {
     _cargarDatosUsuario();
   }
 
-  // --- 1. CARGAR FOTO AL INICIAR ---
   Future<void> _cargarDatosUsuario() async {
     if (_currentUser == null) return;
     try {
@@ -40,7 +39,6 @@ class _PerfilScreenState extends State<PerfilScreen> {
 
       if (userDoc.exists) {
         setState(() {
-          // Si hay una URL guardada en la base de datos, la cargamos
           if (userDoc.data()!.containsKey('profileImageUrl')) {
             _profileImageUrl = userDoc.data()!['profileImageUrl'];
           }
@@ -51,47 +49,41 @@ class _PerfilScreenState extends State<PerfilScreen> {
     }
   }
 
-  // --- 2. FUNCIÓN CORREGIDA: SELECCIONAR Y SUBIR A NUBE ---
   Future<void> _pickImage(ImageSource source) async {
     try {
       final picker = ImagePicker();
       final pickedFile = await picker.pickImage(
         source: source,
-        imageQuality: 80, // Comprimir un poco para que suba rápido
+        imageQuality: 80, 
       );
 
       if (pickedFile != null) {
-        // 1. Mostrar inmediatamente en pantalla (local)
         setState(() {
           _pickedImage = File(pickedFile.path);
-          _isLoading = true; // Mostrar carga mientras sube
+          _isLoading = true; 
         });
 
         if (_currentUser == null) return;
 
-        // 2. Subir a Firebase Storage (La Nube)
         final storageRef = FirebaseStorage.instance
             .ref()
-            .child('user_profiles') // Carpeta en la nube
+            .child('user_profiles') 
             .child(
               '${_currentUser!.uid}.jpg',
-            ); // Nombre del archivo (ID del usuario)
+            );
 
         await storageRef.putFile(_pickedImage!);
 
-        // 3. Obtener el Link de la imagen subida
         final downloadUrl = await storageRef.getDownloadURL();
 
-        // 4. Guardar el Link en la Base de Datos (Firestore)
         await FirebaseFirestore.instance
             .collection('users')
             .doc(_currentUser!.uid)
             .set(
               {'profileImageUrl': downloadUrl},
               SetOptions(merge: true),
-            ); // 'merge' para no borrar el nombre del usuario
+            ); 
 
-        // 5. Actualizar estado final
         setState(() {
           _profileImageUrl = downloadUrl;
           _isLoading = false;
@@ -119,7 +111,6 @@ class _PerfilScreenState extends State<PerfilScreen> {
     }
   }
 
-  // ... (El resto de tus funciones de Backup y Edición se mantienen igual) ...
   Future<void> _generarRespaldo() async {
     setState(() {
       _isLoading = true;
@@ -436,7 +427,6 @@ class _PerfilScreenState extends State<PerfilScreen> {
     }
   }
 
-  // --- INTERFAZ ---
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -568,7 +558,6 @@ class _PerfilScreenState extends State<PerfilScreen> {
     );
   }
 
-  // --- WIDGETS DISEÑO ---
   Widget _buildProfileHeader() {
     return Stack(
       alignment: Alignment.bottomCenter,

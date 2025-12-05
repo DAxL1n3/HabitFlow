@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'login_screen.dart';
-import 'crear_habito_screen.dart'; // 1. Importa la nueva pantalla de formulario
+import 'crear_habito_screen.dart'; 
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,24 +11,19 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // 2. Cambiamos la lista para que guarde más datos, no solo texto.
+ 
   final List<Map<String, String>> _habitos = [];
 
-  // 3. Función para navegar al formulario y esperar el resultado.
   void _navegarACrearHabito() async {
-    // Usamos 'await' para esperar a que la pantalla del formulario se cierre
-    // y nos devuelva el nuevo hábito.
     final nuevoHabito = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const CrearHabitoScreen()),
     );
 
-    // Si recibimos un nuevo hábito (si el usuario guardó), lo agregamos a la lista.
     if (nuevoHabito != null) {
       setState(() {
         _habitos.add(nuevoHabito);
       });
-      // 5. Mostramos un SnackBar de éxito.
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("'${nuevoHabito['nombre']}' fue agregado."),
@@ -66,7 +61,6 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(icon: const Icon(Icons.logout), onPressed: _cerrarSesion),
         ],
       ),
-      // 4. Usamos un FloatingActionButton para agregar nuevos elementos.
       floatingActionButton: FloatingActionButton(
         onPressed: _navegarACrearHabito,
         child: const Icon(Icons.add),
@@ -81,9 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   final habito = _habitos[index];
                   return Card(
                     child: ListTile(
-                      // Mostramos el nombre del hábito
                       title: Text(habito['nombre']!),
-                      // Mostramos los otros campos en el subtítulo
                       subtitle: Text(
                         "Frecuencia: ${habito['frecuencia']}, Días: ${habito['dias']}",
                       ),

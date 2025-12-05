@@ -8,20 +8,16 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // 1. FONDO DE MARCA (El mismo que usas en Login)
           Positioned.fill(
             child: Image.asset(
               'assets/images/fondo.jpg',
               fit: BoxFit.cover,
             ),
           ),
-          
-          // 2. CONTENIDO CENTRAL
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Icono o Logo (Puedes usar un Icon o Image.asset('assets/logo.png'))
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -36,7 +32,7 @@ class SplashScreen extends StatelessWidget {
                     ],
                   ),
                   child: const Icon(
-                    Icons.auto_awesome, // Tu icono de marca (o Icons.compost)
+                    Icons.auto_awesome, 
                     size: 60,
                     color: Colors.blue,
                   ),
@@ -52,7 +48,6 @@ class SplashScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 50),
-                // Indicador de carga discreto
                 const CircularProgressIndicator(
                   color: Colors.blue,
                 ),
@@ -60,7 +55,6 @@ class SplashScreen extends StatelessWidget {
             ),
           ),
           
-          // 3. PIE DE PÁGINA
           const Positioned(
             bottom: 30,
             left: 0,

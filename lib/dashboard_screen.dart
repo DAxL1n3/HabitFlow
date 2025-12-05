@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart'; // Asegúrate de tener intl para formatear fechas bonitas
+import 'package:intl/intl.dart'; 
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -15,7 +15,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
-  // --- HELPERS ---
   String _formatDate(DateTime date) {
     return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
   }
@@ -34,10 +33,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final user = FirebaseAuth.instance.currentUser;
     final String nombreUsuario = user?.displayName ?? 'Usuario';
 
-    // Fecha actual formateada (ej. "jueves, 4 de diciembre")
-    // Nota: Si no tienes configurado el locale 'es_MX' globalmente, esto saldrá en inglés por defecto
     final String fechaHoy = DateFormat(
-      'EEEE, d '
+      'EEEE, d'
           ','
           ' MMMM',
       'es_MX',
@@ -46,12 +43,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (user == null) return const SizedBox();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA), // Fondo Gris Premium
+      backgroundColor: const Color(0xFFF5F7FA), 
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         automaticallyImplyLeading: false,
-        toolbarHeight: 80, // AppBar más alta para el saludo
+        toolbarHeight: 80, 
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -77,7 +74,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   TextSpan(
                     text: nombreUsuario.split(' ')[0],
                     style: const TextStyle(fontWeight: FontWeight.bold),
-                  ), // Solo el primer nombre
+                  ), 
                 ],
               ),
             ),
@@ -101,7 +98,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
               children: [
                 const SizedBox(height: 20),
 
-                // --- SECCIÓN CALENDARIO ---
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Container(
@@ -136,7 +132,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             _focusedDay = focusedDay;
                           },
 
-                          // Estilos del Calendario
                           headerStyle: const HeaderStyle(
                             titleCentered: true,
                             formatButtonVisible: false,
@@ -165,7 +160,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                           ),
 
-                          // Lógica de colores (Tu lógica original)
                           calendarBuilders: CalendarBuilders(
                             defaultBuilder: (context, day, focusedDay) =>
                                 _buildColoredDay(day, docs),
@@ -180,22 +174,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         const Divider(indent: 20, endIndent: 20),
                         const SizedBox(height: 10),
 
-                        // Leyenda de Colores
                         const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             _LeyendaChip(
                               color: Color(0xFF66BB6A),
                               text: "Logrado",
-                            ), // Verde suave
+                            ),
                             _LeyendaChip(
                               color: Color(0xFFFFA726),
                               text: "Parcial",
-                            ), // Naranja
+                            ), 
                             _LeyendaChip(
                               color: Color(0xFFEF5350),
                               text: "Faltó",
-                            ), // Rojo
+                            ), 
                           ],
                         ),
                       ],
@@ -205,7 +198,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                 const SizedBox(height: 25),
 
-                // --- TÍTULO DE SECCIÓN ---
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Text(
@@ -221,9 +213,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                 const SizedBox(height: 10),
 
-                // --- LISTA DE DETALLES ---
-                // Usamos un Container con altura fija o dejamos que crezca,
-                // aquí usamos ListView dentro de Column con shrinkWrap
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: _selectedDay == null
@@ -242,7 +231,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  // --- LÓGICA DE COLORES ---
   Widget _buildColoredDay(
     DateTime day,
     List<QueryDocumentSnapshot> docs, {
@@ -282,17 +270,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (habitosActivos > 0) {
       if (habitosCompletados == habitosActivos) {
         bgColor = const Color(0xFF66BB6A);
-        textColor = Colors.white; // Verde Material 400
+        textColor = Colors.white; 
       } else if (habitosCompletados > 0) {
         bgColor = const Color(0xFFFFA726);
-        textColor = Colors.white; // Naranja Material 400
+        textColor = Colors.white; 
       } else if (dayNormalized.isBefore(_normalizeDate(DateTime.now()))) {
         bgColor = const Color(0xFFEF5350);
-        textColor = Colors.white; // Rojo Material 400
+        textColor = Colors.white; 
       }
     }
 
-    // Estilo para selección y día de hoy
     if (isSelected) {
       border = Border.all(color: Colors.blue[800]!, width: 2.5);
       if (bgColor == Colors.transparent) textColor = Colors.blue[800]!;
@@ -317,7 +304,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  // --- DETALLES ---
   Widget _buildDayDetails(
     List<QueryDocumentSnapshot> docs,
     DateTime selectedDate,
@@ -342,7 +328,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
 
     return ListView.separated(
-      shrinkWrap: true, // Importante dentro de SingleChildScrollView
+      shrinkWrap: true, 
       physics: const NeverScrollableScrollPhysics(),
       itemCount: habitosDelDia.length,
       separatorBuilder: (c, i) => const SizedBox(height: 10),
@@ -428,7 +414,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 }
 
-// Widget Chip para la Leyenda
 class _LeyendaChip extends StatelessWidget {
   final Color color;
   final String text;

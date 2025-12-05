@@ -14,7 +14,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _isLoading = false;
 
-  // --- FUNCIÓN DE LOGIN PRINCIPAL ---
   Future<void> iniciarSesion() async {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       _mostrarMensaje("Ingresa correo y contraseña", Colors.red);
@@ -52,11 +51,10 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  // --- NUEVA FUNCIÓN: RECUPERAR CONTRASEÑA ---
   Future<void> _mostrarDialogoRecuperar() async {
     final resetEmailController = TextEditingController(
       text: _emailController.text,
-    ); // Pre-llena con lo que haya escrito
+    ); 
 
     return showDialog(
       context: context,
@@ -107,12 +105,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   return;
                 }
 
-                // Llamada a Firebase
                 try {
                   await FirebaseAuth.instance.sendPasswordResetEmail(
                     email: email,
                   );
-                  Navigator.pop(context); // Cierra el diálogo
+                  Navigator.pop(context); 
                   _mostrarMensaje(
                     "Correo de recuperación enviado a $email",
                     Colors.green,
@@ -222,12 +219,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           const SizedBox(height: 10),
 
-                          // --- BOTÓN DE RECUPERAR (Ahora funcional) ---
                           Align(
                             alignment: Alignment.centerRight,
                             child: TextButton(
                               onPressed:
-                                  _mostrarDialogoRecuperar, // Llama a la nueva función
+                                  _mostrarDialogoRecuperar, 
                               style: TextButton.styleFrom(
                                 padding: EdgeInsets.zero,
                                 minimumSize: const Size(0, 0),

@@ -18,7 +18,6 @@ class NotificationService {
       sound: true,
     );
 
-    // Configuración Android
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
@@ -50,14 +49,12 @@ class NotificationService {
       0,
       '¡Es hora de tus hábitos! ⏰',
       'Recuerda registrar tu progreso en HabitFlow. ¡Tú puedes!',
-      RepeatInterval.everyMinute, // Recuerda cambiar esto a daily/hourly para producción
+      RepeatInterval.everyMinute, 
       notificationDetails,
-      // --- AQUÍ ESTABA EL ERROR, CAMBIAMOS A INEXACTO ---
       androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
     );
   }
 
-  // Mostrar notificación inmediata (la que ya tenías)
   Future<void> _mostrarNotificacionLocal(RemoteMessage message) async {
     const AndroidNotificationDetails androidDetails =
         AndroidNotificationDetails(
@@ -78,7 +75,6 @@ class NotificationService {
     );
   }
 
-  // Función para cancelar recordatorios (útil para el logout)
   Future<void> cancelarNotificaciones() async {
     await _localNotificationsPlugin.cancelAll();
   }

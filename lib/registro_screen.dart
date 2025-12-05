@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Necesario para guardar en la BD
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegistroScreen extends StatefulWidget {
   const RegistroScreen({super.key});
@@ -10,7 +10,7 @@ class RegistroScreen extends StatefulWidget {
 
 class _RegistroScreenState extends State<RegistroScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _nombreController = TextEditingController(); // Controlador del nombre
+  final _nombreController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
@@ -34,7 +34,6 @@ class _RegistroScreenState extends State<RegistroScreen> {
     });
 
     try {
-      // 1. Crear el usuario en Authentication
       final userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
             email: _emailController.text.trim(),
@@ -44,18 +43,14 @@ class _RegistroScreenState extends State<RegistroScreen> {
       final user = userCredential.user;
 
       if (user != null) {
-        // 2. Actualizar el "Display Name" en Firebase Auth (Para acceso rápido)
         await user.updateDisplayName(_nombreController.text.trim());
-        await user
-            .reload(); // Recargar para asegurar que el cambio se aplique localmente
+        await user.reload();
 
-        // 3. Crear el documento del usuario en Firestore (Para persistencia y datos extra)
         await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
           'uid': user.uid,
           'email': _emailController.text.trim(),
           'displayName': _nombreController.text.trim(),
           'fechaRegistro': Timestamp.now(),
-          // 'profileImageUrl': ... se agregará después si sube foto
         });
 
         if (mounted) {

@@ -14,11 +14,10 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
-  // Lista de pantallas vivas en memoria
   final List<Widget> _screens = [
     const DashboardScreen(),
     const EstatusScreen(),
-    const CrearHabitoScreen(), // Ahora vive aquí, integrada
+    const CrearHabitoScreen(), 
     const PerfilScreen(),
   ];
 
@@ -31,7 +30,6 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // IndexedStack mantiene el estado de los formularios y scroll
       body: IndexedStack(index: _selectedIndex, children: _screens),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

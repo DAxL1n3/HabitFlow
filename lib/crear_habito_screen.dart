@@ -69,7 +69,7 @@ class _CrearHabitoScreenState extends State<CrearHabitoScreen> {
           _habitoController.clear();
           _frecuenciaController.clear();
           _diasController.clear();
-          FocusScope.of(context).unfocus(); // Ocultar teclado
+          FocusScope.of(context).unfocus();
         }
       } else {
         await FirebaseFirestore.instance
@@ -106,7 +106,7 @@ class _CrearHabitoScreenState extends State<CrearHabitoScreen> {
     final bool isEditing = widget.habitoSnapshot != null;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA), // Fondo gris muy suave
+      backgroundColor: const Color(0xFFF5F7FA),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(isEditing ? "Editar Objetivo" : "Nuevo Objetivo"),
@@ -118,15 +118,12 @@ class _CrearHabitoScreenState extends State<CrearHabitoScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // 1. CABECERA CURVA
             _buildHeader(),
-
-            // 2. FORMULARIO FLOTANTE
             Transform.translate(
               offset: const Offset(
                 0,
                 -40,
-              ), // Subimos el formulario para que monte el header
+              ), 
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Container(
@@ -227,8 +224,6 @@ class _CrearHabitoScreenState extends State<CrearHabitoScreen> {
     );
   }
 
-  // --- WIDGETS DE DISEÑO ---
-
   Widget _buildHeader() {
     return Container(
       height: 200,
@@ -287,7 +282,7 @@ class _CrearHabitoScreenState extends State<CrearHabitoScreen> {
         ),
         prefixIcon: Icon(icon, color: Colors.blue[800], size: 22),
         filled: true,
-        fillColor: const Color(0xFFF5F7FA), // Gris muy claro para el input
+        fillColor: const Color(0xFFF5F7FA), 
         contentPadding: const EdgeInsets.symmetric(
           vertical: 16,
           horizontal: 20,

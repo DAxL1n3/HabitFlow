@@ -1,5 +1,5 @@
 class Habito {
-  int? id; // El ID será autoincrementado por la base de datos
+  int? id; 
   String nombre;
   String frecuencia;
   String dias;
@@ -11,7 +11,6 @@ class Habito {
     required this.dias,
   });
 
-  // Convierte un objeto Habito a un Mapa para la base de datos.
   Map<String, dynamic> toMap() {
     return {
       'id': id,
