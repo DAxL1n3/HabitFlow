@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "539734119507",
+    "project_id": "habitflow-app-dc84f",
+    "storage_bucket": "habitflow-app-dc84f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:539734119507:android:b0cfc49a0ae2e9a10ea2a6",
+        "android_client_info": {
+          "package_name": "com.example.dal_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "539734119507-v02e1u78crii5ge0e1uhrapjdj08r5ob.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dal_flutter",
+            "certificate_hash": "b815f22664ec7cba0c4654e6ed0f56ffea79ca1d"
+          }
+        },
+        {
+          "client_id": "539734119507-08glum9md93e1qg91p89ikoftcd07653.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaeDMjVWNzbfGcnSpDtVD7Qahc74VMTqI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "539734119507-08glum9md93e1qg91p89ikoftcd07653.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "539734119507-013q16qa993al83o3ohm93i4abod665b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.dalFlutter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
